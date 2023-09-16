@@ -18,7 +18,7 @@ func wordPattern(pattern string, s string) bool {
 		_, find1 := p2w[string(pattern[i])]
 		_, find2 := w2p[words[i]]
 
-		if !find1 && find2 {
+		if !find1 && !find2 {
 			p2w[string(pattern[i])] = words[i]
 			w2p[words[i]] = string(pattern[i])
 		} else {
