@@ -8,7 +8,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func levelOrder(root *TreeNode) [][]int {
+func Order(root *TreeNode) [][]int {
 	if root == nil {
 		return [][]int{}
 	}
@@ -56,5 +56,5 @@ func main() {
 	node2.Left = node3
 	node2.Right = node4
 
-	fmt.Println(levelOrder(head))
+	fmt.Println(Order(head))
 }
