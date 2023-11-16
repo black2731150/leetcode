@@ -9,7 +9,25 @@ func lengthOfLongestSubstringTwoDistinct(s string) int {
 		return 1
 	}
 
-	return answer
+	chMap := make(map[byte]int)
+
+	maxnum, left := 0, 0
+	for i := range s {
+		chMap[s[i]] = i
+		if len(chMap) > 2 {
+			index := n
+			for _, v := range chMap {
+				if v < index {
+					index = v
+				}
+			}
+			delete(chMap, s[index])
+			left = index + 1
+		}
+		maxnum = max(maxnum, i-left+1)
+	}
+
+	return maxnum
 }
 
 func max(x, y int) int {
