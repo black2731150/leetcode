@@ -4,57 +4,41 @@ import "fmt"
 
 func maxTurbulenceSize(arr []int) int {
 	n := len(arr)
-
-	if n == 1 {
-		return 1
+	if n < 2 {
+		return n
 	}
 
-	diffNums := make([]int, n-1)
-	for i := 0; i < n-1; i++ {
-	}
+	inc, dec := make([]int, n), make([]int, n)
+	inc[0], dec[0] = 1, 1
+	maxLength := 1
 
-	answer := 2
-	maxLenght := 0
-
-	right, left := 1, 0
-
-	status := bijiao(arr[left], arr[right])
-
-	left++
-	right++
-
-	for right < n {
-		if x := bijiao(arr[left], arr[right]); x != status {
-			status = x
-			maxLenght++
-			answer = max(answer, maxLenght)
-
-			left++
-			right++
+	for i := 1; i < n; i++ {
+		if arr[i] > arr[i-1] {
+			inc[i] = dec[i-1] + 1
+			dec[i] = 1
+		} else if arr[i] < arr[i-1] {
+			dec[i] = inc[i-1] + 1
+			inc[i] = 1
 		} else {
-			maxLenght = 1
-			status = x
-			left++
-			right++
+			inc[i], dec[i] = 1, 1
 		}
+		maxLength = max(maxLength, inc[i], dec[i])
 	}
 
-	return answer
+	return maxLength
 }
 
-func bijiao(left, right int) bool {
-	if left < right {
-		return false
-	} else {
-		return true
+func max(a, b, c int) int {
+	if a > b {
+		if a > c {
+			return a
+		}
+		return c
 	}
-}
-
-func max(x, y int) int {
-	if x > y {
-		return x
+	if b > c {
+		return b
 	}
-	return y
+	return c
 }
 
 func main() {
