@@ -104,12 +104,19 @@ func (s *SinglyListNode) IsEmpty() bool {
 
 // 反转链表
 func (s *SinglyListNode) Reverse() *SinglyListNode {
-	if s == nil {
+	if s == nil || s.Next == nil {
 		return nil
 	}
 
-	if s.Next == nil {
-		return s
+	var p *SinglyListNode = nil
+	dangqian := s
+
+	for dangqian != nil {
+		tempNext := dangqian.Next //保存当前节点的下一个节点
+		dangqian.Next = p         //当前节点指向下一个节点 实现反转
+		p = dangqian              //下一个节点指向当前节点
+		dangqian = tempNext       //当前节点指向下一个节点
 	}
 
+	return p
 }
