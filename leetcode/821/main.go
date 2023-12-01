@@ -11,10 +11,17 @@ func shortestToChar(s string, c byte) []int {
 
 	answer := make([]int, len(s))
 	for i := range answer {
+		if s[i]==c{
+			left=right
+			right=
+		}
+
 		if i < left {
 			answer[i] = left - i
 			continue
 		}
+
+
 	}
 }
 
