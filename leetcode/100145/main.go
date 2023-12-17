@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func countCompleteSubstrings(word string, k int) int {
 	sums := make([][]int, len(word)+1)
 	for i := range sums {
@@ -35,7 +37,6 @@ func countCompleteSubstrings(word string, k int) int {
 			}
 		}
 	}
-
 	return answer
 }
 
@@ -44,4 +45,10 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+func main() {
+	word := "daisdsad"
+	k := 2
+	fmt.Println(countCompleteSubstrings(word, k))
 }
