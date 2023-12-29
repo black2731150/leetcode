@@ -1,26 +1,50 @@
 package main
 
+import "fmt"
+
 func numIslands(grid [][]byte) int {
-	n := len(grid)
-	m := len(grid[0])
-
-	all := make([][]byte, n+2)
-	haveCome := make([][]bool, n+2)
-
-	for i := 0; i < n+2; i++ {
-		all = make([][]byte, m+2)
-		haveCome = make([][]bool, m+2)
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return 0
 	}
 
-	for i := 1; i < n+1; i++ {
-		for j := 1; j < m+1; j++ {
-			all[i][j] = (grid[i][j])
+	m := len(grid)
+	n := len(grid[0])
+	answer := 0
+
+	var dfs func(int, int)
+	dfs = func(i, j int) {
+		if i < 0 || j < 0 || i >= m || j >= n || grid[i][j] != '1' {
+			return
+		}
+
+		grid[i][j] = '2'
+
+		dfs(i+1, j)
+		dfs(i-1, j)
+		dfs(i, j+1)
+		dfs(i, j-1)
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == '1' {
+				answer++
+				dfs(i, j)
+			}
 		}
 	}
 
-	for i := 1; i < n+1; i++ {
-		for j := 1; j < m+1; j++ {
+	return answer
+}
 
-		}
+func main() {
+	grid := [][]byte{
+		{'1', '1', '0', '0', '0'},
+		{'1', '1', '0', '0', '0'},
+		{'0', '0', '1', '0', '0'},
+		{'0', '0', '0', '1', '1'},
 	}
+
+	num := numIslands(grid)
+	fmt.Println("Number of islands:", num)
 }

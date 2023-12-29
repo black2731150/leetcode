@@ -1,21 +1,40 @@
 package main
 
+import "fmt"
+
 func longestPalindromeSubseq(s string) int {
-	max := 0
-
-	for i := 0; i < len(s); i++ {
-
+	n := len(s)
+	mat := make([][]int, n)
+	for i := range mat {
+		mat[i] = make([]int, n)
+		mat[i][i] = 1
 	}
-}
 
-func help(s string, left, right int) int {
-	for left >= 0 && right < len(s) {
-		if s[left] == s[right] {
-			left++
-			right--
-		} else {
-			break
+	for l := 2; l <= n; l++ {
+		for i := 0; i <= n-l; i++ {
+			j := i + l - 1
+			if s[i] == s[j] {
+				if l == 2 {
+					mat[i][j] = 2
+				} else {
+					mat[i][j] = mat[i+1][j-1] + 2
+				}
+			} else {
+				mat[i][j] = max(mat[i+1][j], mat[i][j-1])
+			}
 		}
 	}
-	return right - left + 1
+	return mat[0][n-1]
+}
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
+func main() {
+	s := "bbbab"
+	fmt.Println(longestPalindromeSubseq(s))
 }
