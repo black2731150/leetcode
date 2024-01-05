@@ -1,28 +1,33 @@
 package main
 
+import "fmt"
+
 func shortestToChar(s string, c byte) []int {
-	left, right := -1, -1
+	indexs := []int{}
+
 	for i := range s {
 		if s[i] == c {
-			right = i
-			break
+			indexs = append(indexs, i)
 		}
 	}
 
 	answer := make([]int, len(s))
 	for i := range answer {
-		if s[i]==c{
-			left=right
-			right=
+		one := len(s)
+		for _, v := range indexs {
+			one = min(one, abs(v-i))
 		}
-
-		if i < left {
-			answer[i] = left - i
-			continue
-		}
-
-
+		answer[i] = one
 	}
+
+	return answer
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 
 func min(x, y int) int {
@@ -30,4 +35,10 @@ func min(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func main() {
+	s := "loveleetcode"
+	c := 'e'
+	fmt.Println(shortestToChar(s, byte(c)))
 }

@@ -1,74 +1,85 @@
 package main
 
-type List struct {
-	Key  int
-	Val  int
-	Next *List
+type ListNode struct {
+	Key   int
+	Val   int
+	Front *ListNode
+	Next  *ListNode
 }
 
 type LRUCache struct {
-	head *List
-	max  int
-	num  int
-	last *List
+	MaxLen   int
+	RealLen  int
+	ListHead *ListNode
+	ListTail *ListNode
+	TheMap   map[int]*ListNode
 }
 
 func Constructor(capacity int) LRUCache {
-
-	head := &List{}
-
-	return LRUCache{
-		head: head,
-		max:  capacity,
-		num:  0,
-		last: head,
+	node := LRUCache{
+		MaxLen:   capacity,
+		RealLen:  0,
+		ListHead: &ListNode{},
+		ListTail: &ListNode{},
+		TheMap:   make(map[int]*ListNode),
 	}
+	node.ListHead.Next = node.ListTail
+	node.ListTail.Front = node.ListHead
+	return node
 }
 
-func (this *LRUCache) Get(key int) int {
-	newHead := &List{Val: 0, Next: this.head}
-	Head := newHead
-	for ; newHead.Next != nil; newHead = newHead.Next {
-		if newHead.Next.Key == key {
+func (LUR *LRUCache) MoveToHead(node *ListNode) {
+	LUR.RmoveNode(node)
+	LUR.AddToHead(node)
+}
 
-			val := newHead.Next.Val
+func (LUR *LRUCache) AddToHead(node *ListNode) {
+	node.Front = LUR.ListHead
+	node.Next = LUR.ListHead.Next
+	LUR.ListHead.Next.Front = node
+	LUR.ListHead.Next = node
+}
 
-			this.head = Head
+func (LUR *LRUCache) RmoveNode(node *ListNode) {
+	node.Front.Next = node.Next
+	node.Next.Front = node.Front
+}
 
-			newHead.Next = newHead.Next.Next
+func (LUR *LRUCache) RmoveTail() *ListNode {
+	node := LUR.ListTail.Front
+	LUR.RmoveNode(node)
+	return node
+}
 
-			return val
-		}
+func (LUR *LRUCache) Get(key int) int {
+	if value, find := LUR.TheMap[key]; find {
+		node := LUR.TheMap[key]
+		LUR.MoveToHead(node)
+		return value.Val
 	}
 	return -1
 }
 
-func (this *LRUCache) Put(key int, value int) {
-	headCopy := this.head
-	for ; headCopy != nil; headCopy = headCopy.Next {
-		if headCopy.Key == key {
-			headCopy.Val = value
-			return
-		}
-	}
-
-	if this.num < this.max {
-
-		if this.num == 0 {
-			this.last.Key = key
-			this.last.Val = value
-		} else {
-			this.last.Next = &List{
-				Key: key,
-				Val: value,
-			}
-			this.last = this.last.Next
-		}
-
-		this.num++
+func (LUR *LRUCache) Put(key int, value int) {
+	if _, find := LUR.TheMap[key]; find {
+		node := LUR.TheMap[key]
+		node.Val = value
+		LUR.MoveToHead(node)
 	} else {
-		this.last.Key = key
-		this.last.Val = value
+		node := &ListNode{
+			Key:   key,
+			Val:   value,
+			Front: nil,
+			Next:  nil,
+		}
+		LUR.TheMap[key] = node
+		LUR.AddToHead(node)
+		LUR.RealLen++
+		if LUR.RealLen > LUR.MaxLen {
+			removed := LUR.RmoveTail()
+			delete(LUR.TheMap, removed.Key)
+			LUR.RealLen--
+		}
 	}
 }
 
