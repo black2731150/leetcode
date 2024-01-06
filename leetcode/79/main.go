@@ -7,6 +7,7 @@ func exist(board [][]byte, word string) bool {
 		for j := 0; j < n; j++ {
 			if board[i][j] == word[0] {
 				sIndex := 0
+
 			}
 		}
 	}

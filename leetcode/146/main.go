@@ -1,51 +1,51 @@
 package main
 
-type ListNode struct {
+type TListNode struct {
 	Key   int
 	Val   int
-	Front *ListNode
-	Next  *ListNode
+	Front *TListNode
+	Next  *TListNode
 }
 
 type LRUCache struct {
 	MaxLen   int
 	RealLen  int
-	ListHead *ListNode
-	ListTail *ListNode
-	TheMap   map[int]*ListNode
+	ListHead *TListNode
+	ListTail *TListNode
+	TheMap   map[int]*TListNode
 }
 
 func Constructor(capacity int) LRUCache {
 	node := LRUCache{
 		MaxLen:   capacity,
 		RealLen:  0,
-		ListHead: &ListNode{},
-		ListTail: &ListNode{},
-		TheMap:   make(map[int]*ListNode),
+		ListHead: &TListNode{},
+		ListTail: &TListNode{},
+		TheMap:   make(map[int]*TListNode),
 	}
 	node.ListHead.Next = node.ListTail
 	node.ListTail.Front = node.ListHead
 	return node
 }
 
-func (LUR *LRUCache) MoveToHead(node *ListNode) {
+func (LUR *LRUCache) MoveToHead(node *TListNode) {
 	LUR.RmoveNode(node)
 	LUR.AddToHead(node)
 }
 
-func (LUR *LRUCache) AddToHead(node *ListNode) {
+func (LUR *LRUCache) AddToHead(node *TListNode) {
 	node.Front = LUR.ListHead
 	node.Next = LUR.ListHead.Next
 	LUR.ListHead.Next.Front = node
 	LUR.ListHead.Next = node
 }
 
-func (LUR *LRUCache) RmoveNode(node *ListNode) {
+func (LUR *LRUCache) RmoveNode(node *TListNode) {
 	node.Front.Next = node.Next
 	node.Next.Front = node.Front
 }
 
-func (LUR *LRUCache) RmoveTail() *ListNode {
+func (LUR *LRUCache) RmoveTail() *TListNode {
 	node := LUR.ListTail.Front
 	LUR.RmoveNode(node)
 	return node
@@ -66,7 +66,7 @@ func (LUR *LRUCache) Put(key int, value int) {
 		node.Val = value
 		LUR.MoveToHead(node)
 	} else {
-		node := &ListNode{
+		node := &TListNode{
 			Key:   key,
 			Val:   value,
 			Front: nil,
