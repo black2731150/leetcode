@@ -3,44 +3,39 @@ package main
 import "fmt"
 
 func letterCombinations(digits string) []string {
-
-	answer := []string{}
-
 	if len(digits) == 0 {
-		return answer
+		return []string{}
 	}
 
-	TheMap := make(map[int][]string)
-	TheMap[2] = []string{"a", "b", "c"}
-	TheMap[3] = []string{"d", "e", "f"}
-	TheMap[4] = []string{"g", "h", "i"}
-	TheMap[5] = []string{"j", "k", "l"}
-	TheMap[6] = []string{"m", "n", "o"}
-	TheMap[7] = []string{"p", "q", "r", "s"}
-	TheMap[6] = []string{"t", "u", "v"}
-	TheMap[7] = []string{"w", "x", "y", "z"}
+	theMap := make(map[int][]string)
+	theMap[2] = []string{"a", "b", "c"}
+	theMap[3] = []string{"d", "e", "f"}
+	theMap[4] = []string{"g", "h", "i"}
+	theMap[5] = []string{"j", "k", "l"}
+	theMap[6] = []string{"m", "n", "o"}
+	theMap[7] = []string{"p", "q", "r", "s"}
+	theMap[8] = []string{"t", "u", "v"}
+	theMap[9] = []string{"w", "x", "y", "z"}
 
-	var help func(have []string, i int)
-	help = func(have []string, i int) {
-		if i == len(digits) {
-			answer = append(answer, have...)
+	var answer []string
+	var help func(combination string, nextDigits string)
+	help = func(combination string, nextDigits string) {
+		if len(nextDigits) == 0 {
+			answer = append(answer, combination)
 		} else {
-			for _, ch := range TheMap[int(digits[i]-'0')] {
-				copyhave := make([]string, len(have))
-				copy(copyhave, have)
-				for i2 := range copyhave {
-					copyhave[i2] += ch
-				}
-				help(have, i+1)
+			digit := nextDigits[0] - '0'
+			letters := theMap[int(digit)]
+			for _, letter := range letters {
+				help(combination+letter, nextDigits[1:])
 			}
 		}
 	}
-	help(TheMap[int(digits[0]-'0')], 1)
 
+	help("", digits)
 	return answer
 }
 
 func main() {
-	digit := "23"
-	fmt.Println(letterCombinations(digit))
+	digits := "23"
+	fmt.Println(letterCombinations(digits))
 }
