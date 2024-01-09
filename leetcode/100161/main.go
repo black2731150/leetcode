@@ -1,6 +1,9 @@
 package main
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 func divideArray(nums []int, k int) [][]int {
 	sort.Ints(nums)
@@ -27,4 +30,10 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+func main() {
+	nums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	k := 2
+	fmt.Println(divideArray(nums, k))
 }
