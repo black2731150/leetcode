@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func mostPoints(questions [][]int) int64 {
 	n := len(questions)
 	dp := make([]int64, n+1)
@@ -40,4 +42,5 @@ func max(x, y int64) int64 {
 
 func main() {
 	questions := [][]int{{3, 2}, {3, 4}, {4, 5}, {2, 5}}
+	fmt.Println(mostPoints(questions))
 }
