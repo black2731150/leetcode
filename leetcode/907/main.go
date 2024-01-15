@@ -2,49 +2,58 @@ package main
 
 import "fmt"
 
+// 空间复杂度过高
+// func sumSubarrayMins(arr []int) int {
+// 	mod := int(1e9 + 7)
+
+// 	n := len(arr)
+
+// 	bp := make([][]int, n)
+// 	for i := range bp {
+// 		bp[i] = make([]int, n)
+// 	}
+
+// 	for i, v := range arr {
+// 		bp[i][i] = v
+// 	}
+
+// 	for i := 0; i < n; i++ {
+// 		for j := i + 1; j < n; j++ {
+// 			bp[i][j] = min(bp[i][j-1], arr[j])
+// 		}
+// 	}
+
+// 	answer := 0
+// 	for i := range bp {
+// 		for _, v2 := range bp[i] {
+// 			answer = (answer + v2) % mod
+// 		}
+// 	}
+
+// 	return answer
+// }
+
 func sumSubarrayMins(arr []int) int {
 	mod := int(1e9 + 7)
+
 	n := len(arr)
 	answer := 0
 
-	// 创建两个数组来存储每个元素作为最小值时可以延伸的左右范围
-	left, right := make([]int, n), make([]int, n)
-	stack := []int{} // 单调栈
-
-	// 计算每个元素向左延伸的最大范围
 	for i := 0; i < n; i++ {
-		for len(stack) > 0 && arr[stack[len(stack)-1]] > arr[i] {
-			stack = stack[:len(stack)-1]
+		minNum := arr[i]
+		for j := i; j < n; j++ {
+			minNum = min(minNum, arr[j])
+			answer = (answer + minNum) % mod
 		}
-		if len(stack) == 0 {
-			left[i] = -1
-		} else {
-			left[i] = stack[len(stack)-1]
-		}
-		stack = append(stack, i)
 	}
-
-	// 清空栈，用于计算每个元素向右延伸的最大范围
-	stack = []int{}
-
-	for i := n - 1; i >= 0; i-- {
-		for len(stack) > 0 && arr[stack[len(stack)-1]] >= arr[i] {
-			stack = stack[:len(stack)-1]
-		}
-		if len(stack) == 0 {
-			right[i] = n
-		} else {
-			right[i] = stack[len(stack)-1]
-		}
-		stack = append(stack, i)
-	}
-
-	// 计算每个元素作为最小值时的贡献
-	for i := 0; i < n; i++ {
-		answer = (answer + arr[i]*(i-left[i])*(right[i]-i)) % mod
-	}
-
 	return answer
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
 }
 
 func main() {
