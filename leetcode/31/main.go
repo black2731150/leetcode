@@ -1,23 +1,32 @@
 package main
 
 func nextPermutation(nums []int) {
-	if len(nums) == 1 {
+	if len(nums) <= 1 {
 		return
 	}
 
 	n := len(nums)
 
-	lastUp := 0
-	for i := 1; i < n; i++ {
+	i := n - 2
+	for i >= 0 && nums[i] >= nums[i+1] {
+		i--
+	}
 
-		if nums[i] > nums[i-1] {
-			lastUp = i - 1
-			continue
+	if i >= 0 {
+		j := n - 1
+		for j >= 0 && nums[i] >= nums[j] {
+			j--
 		}
+
+		nums[i], nums[j] = nums[j], nums[i]
 	}
 
-	for i, j := 0, len(nums[lastUp:])-1; i < j; i, j = i+1, j-1 {
-		nums[lastUp:][i], nums[lastUp:][j] = nums[lastUp:][j], nums[lastUp:][i]
+	for i2, j := 0, len(nums[i+1:])-1; i2 < j; i2, j = i2+1, j-1 {
+		nums[i+1:][i2], nums[i+1:][j] = nums[i+1:][j], nums[i+1:][i2]
 	}
+}
 
+func main() {
+	nums := []int{1, 2, 3}
+	nextPermutation(nums)
 }
