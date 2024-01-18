@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -10,18 +12,23 @@ func rob(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	var dfs func(r *TreeNode, parentVal, grandVal int) int
-	dfs = func(r *TreeNode, parentVal, grandVal int) int {
+	var dfs func(r *TreeNode) (int, int)
+	dfs = func(r *TreeNode) (int, int) {
 		if r == nil {
-			return 0
+			return 0, 0
 		}
-		left := dfs(r.Left, r.Val, parentVal)
-		right := dfs(r.Right, r.Val, parentVal)
 
-		return r.Val + max(left, right)
+		leftWithRoot, leftWithOutRoot := dfs(r.Left)
+		rightWitRoot, rightWithOutRoot := dfs(r.Right)
+
+		withRoot := r.Val + leftWithOutRoot + rightWithOutRoot
+		withoutRoot := max(leftWithRoot, leftWithOutRoot) + max(rightWitRoot, rightWithOutRoot)
+
+		return withRoot, withoutRoot
 	}
 
-	return
+	withRoot, withoutRoot := dfs(root)
+	return max(withRoot, withoutRoot)
 }
 
 func max(x, y int) int {
@@ -29,4 +36,9 @@ func max(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func main() {
+	root := &TreeNode{Val: 3, Left: &TreeNode{Val: 2, Right: &TreeNode{Val: 3}}, Right: &TreeNode{Val: 3, Right: &TreeNode{Val: 1}}}
+	fmt.Println(rob(root))
 }
