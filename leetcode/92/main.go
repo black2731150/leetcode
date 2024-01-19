@@ -8,25 +8,25 @@ type ListNode struct {
 }
 
 func reverseBetween(head *ListNode, left int, right int) *ListNode {
-	if head == nil || head.Next == nil {
-		return head
-	}
-
 	copyHead := head
 
-	for i := 0; i < left-1; i++ {
-		head = head.Next
-	}
-
-	leftPre := head
-	head = head.Next
-
-	next := head.Next
-	for i := 0; i < right-left-1; i++ {
-		if head != nil && head.Next != nil {
-			
+	left = left - 1
+	l, r := head, head
+	for left > 0 || right > 0 {
+		if left > 0 {
+			left--
+			l = l.Next
+		}
+		if right > 0 {
+			right--
+			r = r.Next
 		}
 	}
+
+	if l.Next != nil {
+		l.Next.Next = r.Next
+	}
+	l.Next = r
 
 	return copyHead
 }
