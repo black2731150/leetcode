@@ -33,6 +33,13 @@ func beautifulIndices(s string, a string, b string, k int) []int {
 	return answer
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 // 超出时间限制
 // func beautifulIndices(s string, a string, b string, k int) []int {
 // 	answer := []int{}
@@ -51,13 +58,6 @@ func beautifulIndices(s string, a string, b string, k int) []int {
 
 // 	return answer
 // }
-
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
 
 func main() {
 	s := "isawsquirrelnearmysquirrelhouseohmy"

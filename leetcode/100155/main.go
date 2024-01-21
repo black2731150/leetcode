@@ -13,10 +13,9 @@ func getGoodIndices(variables [][]int, target int) []int {
 		c := nums[2]
 		m := nums[3]
 
-		x := pow(int64(a), int64(b)) % int64(10)
-		y := pow(x, int64(c))
-		z := y % int64(m)
-		if z == int64(target) {
+		x := powMod(int64(a), int64(b), 10)
+		y := powMod(x, int64(c), int64(m))
+		if y == int64(target) {
 			answer = append(answer, i)
 		}
 	}
@@ -24,11 +23,10 @@ func getGoodIndices(variables [][]int, target int) []int {
 	return answer
 }
 
-func pow(x, y int64) int64 {
+func powMod(x, y, mod int64) int64 {
 	var answer int64 = 1
-	var i int64 = 0
-	for ; i < y; i++ {
-		answer = answer * int64(x)
+	for i := int64(0); i < y; i++ {
+		answer = (answer * x) % mod
 	}
 	return answer
 }
