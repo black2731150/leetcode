@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func maxProfit(prices []int) int {
 	n := len(prices)
 
@@ -7,23 +9,19 @@ func maxProfit(prices []int) int {
 		return 0
 	}
 
-	bp := make([][]int, n)
-	for i := range bp {
-		bp[i] = make([]int, 2)
+	bp := make([][3]int, n)
+
+	bp[0][0] = -prices[0]
+	bp[0][1] = 0
+	bp[0][2] = 0
+
+	for i := 1; i < n; i++ {
+		bp[i][0] = max(bp[i-1][0], bp[i-1][2]-prices[i])
+		bp[i][1] = bp[i-1][0] + prices[i]
+		bp[i][2] = max(bp[i-1][1], bp[i-1][2])
 	}
 
-	bp[0][0] = 0
-	bp[0][1] = -prices[0]
-
-	bp[1][0] = max(bp[0][0], bp[0][1]+prices[1])
-	bp[1][1] = max(bp[0][1], bp[0][0]-prices[1])
-
-	for i := 2; i < n; i++ {
-		bp[i][0] = max(max(bp[i-2][1]+prices[i-2], bp[i-1][1]+prices[i-1]), bp[i-1][0])
-		bp[i][1] = max(bp[i-1][0]-prices[i-1], bp[i-1][1])
-	}
-
-	return bp[n-1][0]
+	return max(bp[n-1][1], bp[n-1][2])
 }
 
 func max(x, y int) int {
@@ -31,4 +29,9 @@ func max(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func main() {
+	prices := []int{1, 2, 3, 0, 2}
+	fmt.Println(maxProfit(prices))
 }
