@@ -22,7 +22,7 @@ func canChange(start string, target string) bool {
 			} else {
 				for ; sindex < len(start); sindex++ {
 					if start[sindex] == '_' {
-						return false
+						continue
 					} else {
 						if start[sindex] == 'R' {
 							sindex++
