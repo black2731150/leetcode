@@ -43,6 +43,7 @@ func abs(x int) int {
 }
 
 func main() {
-	nums := []int{-1, 2, 1, 4}
-	fmt.Println(threeSumClosest(nums, 1))
+	nums := []int{-1, 2, 1, -4}
+	target := 1
+	fmt.Println(threeSumClosest(nums, target))
 }

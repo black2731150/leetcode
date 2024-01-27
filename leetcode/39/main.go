@@ -1,40 +1,44 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 func combinationSum(candidates []int, target int) [][]int {
-	var result [][]int
-	var current []int
+	sort.Ints(candidates)
+	answer := [][]int{}
 
-	var backtrack func(start, target int)
-	backtrack = func(start, target int) {
-		if target == 0 {
-			// 找到了一个满足条件的组合，将其添加到结果中
-			result = append(result, append([]int{}, current...))
+	var help func(nums []int, index int, tar int)
+	help = func(nums []int, index int, tar int) {
+		if tar < 0 {
 			return
 		}
 
-		for i := start; i < len(candidates); i++ {
-			if candidates[i] > target {
-				// 剪枝：当前候选数大于目标值，不可能满足条件，跳过
-				continue
-			}
+		if tar == 0 {
+			copyOne := make([]int, len(nums))
+			copy(copyOne, nums)
+			answer = append(answer, copyOne)
+			return
+		} else {
+			for i := index; i < len(candidates); i++ {
+				if tar < candidates[i] {
+					break
+				}
 
-			// 剪枝：去除重复元素，避免重复组合
-			if i > start && candidates[i] == candidates[i-1] {
-				continue
-			}
+				if i > index && candidates[i] == candidates[i-1] {
+					continue
+				}
 
-			current = append(current, candidates[i])
-			backtrack(i, target-candidates[i])
-			current = current[:len(current)-1]
+				nums = append(nums, candidates[i])
+				help(nums, i, tar-candidates[i])
+				nums = nums[:len(nums)-1]
+			}
 		}
 	}
 
-	// 开始回溯搜索
-	backtrack(0, target)
-
-	return result
+	help([]int{}, 0, target)
+	return answer
 }
 
 func main() {

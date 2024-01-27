@@ -13,15 +13,55 @@ func intToRoman(num int) string {
 	answer := []byte{}
 	for num > 0 {
 		if num >= 1000 {
-			for i := 0; i < num/1000; i++ {
-				answer = append(answer, theMap[1000])
-				num = num - 1000
-			}
+			answer = append(answer, theMap[1000])
+			num = num - 1000
+			continue
 		}
 
 		if num > 800 {
-			answer = append(answer, theMap[1000])
+			for num > 800 {
+				answer = append(answer, theMap[100])
+				num -= 100
+			}
+			answer = append(answer, theMap[])
+		}
 
+		if num >= 500 {
+			answer = append(answer, theMap[500])
+			num -= 500
+			continue
+		}
+
+		if num >= 100 {
+			answer = append(answer, theMap[100])
+			num -= 100
+			continue
+		}
+
+		if num >= 50 {
+			answer = append(answer, theMap[50])
+			num -= 50
+			continue
+		}
+
+		if num >= 10 {
+			answer = append(answer, theMap[10])
+			num -= 10
+			continue
+		}
+
+		if num >= 5 {
+			answer = append(answer, theMap[5])
+			num -= 5
+			continue
+		}
+
+		if num >= 1 {
+			answer = append(answer, theMap[1])
+			num -= 1
+			continue
 		}
 	}
+
+	return string(answer)
 }
