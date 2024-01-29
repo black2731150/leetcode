@@ -45,13 +45,6 @@ func minOperationsMaxProfit(customers []int, boardingCost int, runningCost int) 
 	return answer
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
 func main() {
 	customers := []int{2, 3}
 	boardingCost := 3
