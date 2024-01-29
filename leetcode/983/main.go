@@ -1,30 +1,39 @@
 package main
 
+import "fmt"
+
 func mincostTickets(days []int, costs []int) int {
-	chufa := make([]bool, 365)
+	dp := make([]int, 365+1)
+
+	m := make(map[int]struct{})
 	for _, v := range days {
-		chufa[v-1] = true
+		m[v] = struct{}{}
 	}
 
-	one := costs[0]
-	seven := costs[1]
-	thrty := costs[2]
+	day, week, month := costs[0], costs[1], costs[2]
 
-	bp := make([]int, len(days))
-	bp[0] = one
+	for i := 1; i < 366; i++ {
+		if _, find := m[i]; find {
+			dp[i] = dp[i-1] + day
 
-	sevenDay := 0
-	for i := 0; i < 7; i++ {
-		if chufa[i] {
-			sevenDay++
+			if i-7 >= 0 {
+				dp[i] = min(dp[i-7]+week, dp[i])
+			} else {
+				dp[i] = min(dp[i], week)
+			}
+
+			if i-30 >= 0 {
+				dp[i] = min(dp[i-30]+month, dp[i])
+			} else {
+				dp[i] = min(dp[i], month)
+			}
+		} else {
+			dp[i] = dp[i-1]
 		}
+
 	}
-	if seven <= sevenDay*one {
-		bp[0] = seven
-		for i := 0; i < 7; i++ {
-			chufa[i] = false
-		}
-	}
+
+	return dp[len(dp)-1]
 }
 
 func min(x, y int) int {
@@ -32,4 +41,10 @@ func min(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func main() {
+	days := []int{1, 4, 6, 7, 8, 20}
+	conts := []int{2, 7, 15}
+	fmt.Println(mincostTickets(days, conts))
 }
