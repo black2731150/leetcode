@@ -1,24 +1,31 @@
 package main
 
+import "fmt"
+
+// 分组背包问题
 func maxValueOfCoins(piles [][]int, k int) int {
 	n := len(piles)
-	qianzhui := make([][]int, n)
-	for i := range qianzhui {
-		qianzhui[i] = make([]int, len(piles[i])+1)
+	weight := make([][]int, n)
+	for i := range weight {
+		weight[i] = make([]int, len(piles[i])+1)
 	}
-
 	for i := range piles {
 		for j := range piles[i] {
-			qianzhui[i][j+1] = qianzhui[i][j] + piles[i][j]
+			weight[i][j+1] = weight[i][j] + piles[i][j]
 		}
 	}
 
-	dp := make([][]int, k)
-	for i := range dp {
-		dp[i] = make([]int, k)
+	dp := make([]int, k+1)
+
+	for i := 0; i < n; i++ {
+		for v := k; v >= 1; v-- {
+			for j := 1; j <= v && j <= len(piles[i]); j++ {
+				dp[v] = max(dp[v], dp[v-j]+weight[i][j])
+			}
+		}
 	}
 
-	return 0
+	return dp[k]
 }
 
 func max(x, y int) int {
@@ -26,4 +33,10 @@ func max(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func main() {
+	piles := [][]int{{1, 100, 3}, {7, 8, 9}}
+	k := 2
+	fmt.Println(maxValueOfCoins(piles, k))
 }

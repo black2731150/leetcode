@@ -3,28 +3,22 @@ package main
 import "fmt"
 
 func change(amount int, coins []int) int {
+	N := len(coins)
 
-	bp := make([]int, amount+1)
-	bp[0] = 0
-	bp[1] = 1
-	bp[2] = 2
+	dp := make([]int, amount+1)
+	dp[0] = 1
 
-	for i := 1; i < len(bp); i++ {
-		for _, v := range coins {
-			if i-v >= 0 {
-				bp[i] = bp[i-v] + bp[v]
-			}
+	for i := 0; i < N; i++ {
+		for v := coins[i]; v <= amount; v++ {
+			dp[v] += dp[v-coins[i]]
 		}
 	}
 
-	fmt.Println(bp)
-
-	return bp[len(bp)-1]
+	return dp[amount]
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
+func main() {
+	amount := 2
+	coins := []int{1, 2, 5}
+	fmt.Println(change(amount, coins))
 }

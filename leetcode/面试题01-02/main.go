@@ -1,22 +1,22 @@
 package main
 
 func CheckPermutation(s1 string, s2 string) bool {
-
 	if len(s1) != len(s2) {
 		return false
 	}
 
-	nums := make([]int, 26)
-	for i := range s1 {
-		nums[s1[i]-'a']++
+	n1 := make([]int, 26)
+
+	for i := 0; i < len(s1); i++ {
+		n1[int(s1[i]-'a')]++
+		n1[int(s2[i]-'a')]--
 	}
 
-	for i := range s2 {
-		if nums[s2[i]-'a'] == 0 {
+	for _, v := range n1 {
+		if v != 0 {
 			return false
-		} else {
-			nums[s2[i]-'a']--
 		}
 	}
+
 	return true
 }
