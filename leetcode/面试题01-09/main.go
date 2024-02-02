@@ -12,7 +12,7 @@ func isFlipedString(s1 string, s2 string) bool {
 	}
 
 	for i := range s1 {
-		if tmp := s1[i:] + s1[:i]; tmp == s2 {
+		if s1[i:]+s1[:i] == s2 {
 			return true
 		}
 	}
