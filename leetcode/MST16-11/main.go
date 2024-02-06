@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sort"
 )
 
 func divingBoard(shorter int, longer int, k int) []int {
@@ -15,9 +14,9 @@ func divingBoard(shorter int, longer int, k int) []int {
 		return []int{k * longer}
 	}
 	for i := 0; i <= k; i++ {
-		answer[i] = i*shorter + longer*(k-i)
+		answer[i] = i*longer + shorter*(k-i)
 	}
-	sort.Ints(answer)
+	// sort.Ints(answer)
 	return answer
 }
 
@@ -26,5 +25,4 @@ func main() {
 	longer := 2
 	k := 3
 	fmt.Println(divingBoard(shorter, longer, k))
-
 }
