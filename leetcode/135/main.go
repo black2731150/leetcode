@@ -3,58 +3,36 @@ package main
 import "fmt"
 
 func candy(ratings []int) int {
-	ratingsLen := len(ratings)
-	candyNums := make([]int, ratingsLen)
+	answer := make([]int, len(ratings))
 
-	check := func(x, y int) bool {
-		if ratings[x] > ratings[y] {
-			if candyNums[x] > candyNums[y] {
-				return true
-			} else {
-				candyNums[x]++
-				return false
-			}
-		} else if ratings[x] == ratings[y] {
-			return true
-		} else {
-			if candyNums[x] < candyNums[y] {
-				return true
-			} else {
-				candyNums[y]++
-				return false
-			}
+	for i := range answer {
+		answer[i] = 1
+	}
+
+	for i := 1; i < len(answer); i++ {
+		if ratings[i] > ratings[i-1] {
+			answer[i] = answer[i-1] + 1
 		}
 	}
 
-	//给每一个孩子发一颗糖
-	for i := 0; i < ratingsLen; i++ {
-		candyNums[i]++
-	}
-
-	//检查相邻两个孩子
-	for i := 0; i+1 < ratingsLen; i++ {
-		if check(i, i+1) {
-			continue
-		} else {
-			i = 0
+	for i := len(answer) - 2; i >= 0; i-- {
+		if ratings[i] > ratings[i+1] {
+			answer[i] = max(answer[i+1]+1, answer[i])
 		}
 	}
 
-	//检查相邻两个孩子
-	for i := 0; i+1 < ratingsLen; i++ {
-		if check(i, i+1) {
-			continue
-		} else {
-			i = 0
-		}
+	sum := 0
+	for _, v := range answer {
+		sum += v
 	}
+	return sum
+}
 
-	answer := 0
-	for i := range candyNums {
-		answer = answer + candyNums[i]
+func max(x, y int) int {
+	if x > y {
+		return x
 	}
-
-	return answer
+	return y
 }
 
 func main() {
