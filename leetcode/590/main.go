@@ -5,7 +5,7 @@ type Node struct {
 	Children []*Node
 }
 
-func preorder(root *Node) []int {
+func postorder(root *Node) []int {
 	if root == nil {
 		return nil
 	}
@@ -17,10 +17,10 @@ func preorder(root *Node) []int {
 			return
 		}
 
-		answer = append(answer, r.Val)
 		for _, n := range r.Children {
 			dfs(n)
 		}
+		answer = append(answer, r.Val)
 	}
 
 	dfs(root)
@@ -29,5 +29,5 @@ func preorder(root *Node) []int {
 
 func main() {
 	root := Node{Val: 1, Children: []*Node{{Val: 2}, {Val: 2}}}
-	preorder(&root)
+	postorder(&root)
 }
