@@ -5,6 +5,6 @@ tmp AS (
     GROUP BY customer_id
 )
 
-SELECT COUNT(*)
+SELECT COUNT(*) AS rich_count
 FROM tmp
 WHERE max_amount>500

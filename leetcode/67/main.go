@@ -3,13 +3,6 @@ package main
 import "fmt"
 
 func addBinary(a string, b string) string {
-	var max int
-	if len(a) > len(b) {
-		max = len(a) - 1
-	} else {
-		max = len(b) - 1
-	}
-
 	alast := len(a) - 1
 	blast := len(b) - 1
 
@@ -43,7 +36,6 @@ func addBinary(a string, b string) string {
 		}
 
 		answer = append(answer, z)
-		max--
 
 		alast--
 		blast--
